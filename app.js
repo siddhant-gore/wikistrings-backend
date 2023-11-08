@@ -22,7 +22,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Farm server" });
+  res.json({ message: "Welcome to Wiki-strings server" });
 });
 
 app.use("/api", authRoutes);
