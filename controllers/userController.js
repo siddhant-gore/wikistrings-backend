@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../utils/catchAsyncError.js";
+import APIFeatures from "../utils/apiFeatures.js";
 
 
 export const getUserProfile = catchAsyncError(async(req,res,next)=>{
@@ -31,4 +32,6 @@ export const updateUserProfile = catchAsyncError(async (req, res, next) => {
   
     res.status(200).json({ success: true, user: updatedUser });
   });
+  
+
   

@@ -7,7 +7,10 @@ import ErrorHandler from "./utils/errorHandler.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import guitarRoutes from "./routes/guitarRoutes.js";
 import { auth, isAdmin } from "./middlewares/authMiddleware.js";
+import multer from "multer";
+import bodyParser from "body-parser";
 
 dotenv.config();
 const app = express();
@@ -26,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", authRoutes);
+app.use("/api/data", guitarRoutes);
 app.use("/api/user", auth, userRoutes);
 app.use("/api/admin",auth,isAdmin,adminRoutes)
 
@@ -39,5 +43,8 @@ app.all("*", async (req, res, next) => {
 });
 
 app.use(error);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 export default app;
