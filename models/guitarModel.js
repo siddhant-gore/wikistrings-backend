@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
 
-mongoose.models = {};
-mongoose.modelSchemas = {};
-
 const audioFileSchema = {
   name: {
     type: String,

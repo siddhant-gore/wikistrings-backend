@@ -1,10 +1,9 @@
 import User from "../models/userModel.js";
-import Guitar from "../models/GuitarModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../utils/catchAsyncError.js";
 import APIFeatures from "../utils/apiFeatures.js";
 import { s3Uploadv2, upload } from "../utils/s3.js";
-import multer from "multer";
+import Guitar from "../models/guitarModel.js";
 
 
 export const updateAdmin = catchAsyncError(async(req,res,next)=>{
