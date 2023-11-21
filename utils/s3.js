@@ -32,8 +32,9 @@ const s3UploadMulti = async (files) => {
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.split("/")[0] === "audio") {
-    req.audio_file = true;
+  const allowedMimeTypes = ["audio", "image"];
+  if (allowedMimeTypes.includes(file.mimetype.split("/")[0])) {
+    req.fileType = file.mimetype.split("/")[0];
     cb(null, true);
   } else {
     cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
@@ -44,6 +45,9 @@ export const upload = multer({
   storage,
   fileFilter,
   limits: { fileSize: 11006600, files: 5 },
+  onProgress: (loaded, total) => {
+    console.log(`Progress: ${(loaded / total) * 100}%`);
+  },
 });
 
 export { s3Uploadv2, s3UploadMulti };
