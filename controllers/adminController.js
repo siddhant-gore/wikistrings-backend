@@ -97,20 +97,26 @@ export const createGuitar = catchAsyncError(async(req, res, next) => {
 
 
 
-export const getGuitars = catchAsyncError(async(req,res,next)=>{
+export const getGuitars = catchAsyncError(async (req, res, next) => {
 
-  const apiFeature = new APIFeatures(Guitar.find().sort({createdAt: -1}), req.query)
+  const apiFeature = new APIFeatures(Guitar.find().sort({ createdAt: -1 }), req.query).search();
+
+  
+
+  let guitars = await apiFeature.query;
+  let guitarsCount = guitars.length;
 
   if (req.query.resultPerPage && req.query.currentPage) {
     apiFeature.pagination();
+    guitars = await apiFeature.query.clone(); 
   }
 
-  const guitars = await apiFeature.query;
+  
 
-  const guitarsCount = await Guitar.countDocuments();
+  res.status(200).json({ success: true, guitars, guitarsCount });
+});
 
-    res.status(200).json({success:true, guitars, guitarsCount});
-})
+
 
 export const getGuitarById = catchAsyncError(async(req,res,next)=>{
 

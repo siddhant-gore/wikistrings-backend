@@ -8,6 +8,8 @@ class APIFeatures {
 		const searchTerms = this.queryStr?.keyword;
 	
 		if (searchTerms) {
+			console.log(searchTerms);
+			
 			const keywordQuery = {
 				$or: [
 					
@@ -18,6 +20,8 @@ class APIFeatures {
 					{ firstname: { $regex: searchTerms, $options: 'i' } },
 					{ lastname: { $regex: searchTerms, $options: 'i' } },
 					{ plan: { $regex: searchTerms, $options: 'i' } },
+					{ type: { $regex: searchTerms, $options: 'i' } },
+					{ guitarName: { $regex: searchTerms, $options: 'i' } },
 					
 					
 				]
