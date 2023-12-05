@@ -27,10 +27,10 @@ const guitarSchema = new mongoose.Schema({
     required: true,
     enum:["acoustic","electric"]
   },
-  artist: {
-    type: String,
-    required: true,
-  },
+  // artist: {
+  //   type: String,
+  //   required: true,
+  // },
   brand:{
     type: String,
     required: true,
@@ -45,6 +45,8 @@ const guitarSchema = new mongoose.Schema({
     match: /^https?:\/\/.+/,
   },
   strings: [audioFileSchema], 
+},{
+  timestamps: true,
 });
 
 const Guitar = mongoose.model('Guitar', guitarSchema);

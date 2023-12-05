@@ -9,7 +9,7 @@ class APIFeatures {
 	
 		if (searchTerms) {
 			console.log(searchTerms);
-			
+
 			const keywordQuery = {
 				$or: [
 					
@@ -19,8 +19,10 @@ class APIFeatures {
 					{ mobile_no: { $regex: searchTerms, $options: 'i' } },
 					{ firstname: { $regex: searchTerms, $options: 'i' } },
 					{ lastname: { $regex: searchTerms, $options: 'i' } },
-					{ plan: { $regex: searchTerms, $options: 'i' } },
 					{ type: { $regex: searchTerms, $options: 'i' } },
+					{ brand: { $regex: searchTerms, $options: 'i' } },
+					{ material: { $regex: searchTerms, $options: 'i' } },
+					{ artist: { $regex: searchTerms, $options: 'i' } },
 					{ guitarName: { $regex: searchTerms, $options: 'i' } },
 					
 					

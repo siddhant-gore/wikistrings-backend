@@ -4,6 +4,8 @@ import catchAsyncError from "../utils/catchAsyncError.js";
 import APIFeatures from "../utils/apiFeatures.js";
 import { s3Uploadv2, upload } from "../utils/s3.js";
 import Guitar from "../models/guitarModel.js";
+import Brand from "../models/brandModel.js";
+import Material from "../models/materialModel.js";
 
 
 export const updateAdmin = catchAsyncError(async(req,res,next)=>{
@@ -95,27 +97,19 @@ export const createGuitar = catchAsyncError(async(req, res, next) => {
 });
 
 
-
-
 export const getGuitars = catchAsyncError(async (req, res, next) => {
-
-  const apiFeature = new APIFeatures(Guitar.find().sort({ createdAt: -1 }), req.query).search();
-
-  
+  const apiFeature = new APIFeatures(Guitar.find().sort({createdAt: -1}), req.query).search();
 
   let guitars = await apiFeature.query;
   let guitarsCount = guitars.length;
 
   if (req.query.resultPerPage && req.query.currentPage) {
     apiFeature.pagination();
-    guitars = await apiFeature.query.clone(); 
-  }
-
-  
+    guitars = await apiFeature.query.clone();
+  }  
 
   res.status(200).json({ success: true, guitars, guitarsCount });
 });
-
 
 
 export const getGuitarById = catchAsyncError(async(req,res,next)=>{
@@ -160,9 +154,78 @@ export const updateGuitarById = catchAsyncError(async(req,res,next)=>{
 })
 
 
+export const createMaterial = catchAsyncError(async(req,res,next)=>{
+
+  const { name } = req.body;
+  const material = await Material.create({ name });
+
+
+  res.status(201).json({ success: true, material })
+
+})
+
+export const getOptions = catchAsyncError(async(req,res,next)=>{
+
+  const brands = await Brand.find();
+  const materials = await Material.find();
+
+  res.status(200).json({ success: true, brands, materials })
+
+})
+
+export const getMaterials = catchAsyncError(async(req,res,next)=>{
+
+  const material = await Material.find();
+
+  res.status(200).json({ success: true, material })
+
+})
+
+export const deleteMaterial = catchAsyncError(async(req,res,next)=>{
+
+
+  const material = await Material.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ success: true, material })
+
+})
+export const createBrand = catchAsyncError(async(req,res,next)=>{
+
+  console.log(req.body);
+  const { name } = req.body;
+
+
+  if (!name) {
+    return res.status(400).json({ success: false, message: 'Name is required' });
+  }
+  const brand = await Brand.create({ name });
+
+
+  res.status(201).json({ success: true, brand })
+
+})
+
+export const getBrands = catchAsyncError(async(req,res,next)=>{
+
+  const brands = await Brand.find();
+
+  res.status(200).json({ success: true, brands })
+
+})
+
+export const deleteBrand = catchAsyncError(async(req,res,next)=>{
+
+
+  const brand = await Brand.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ success: true, brand })
+
+})
+
 
 export const uploadAudio = catchAsyncError(async (req, res, next) => {
   const { originalname, buffer } = req.file;
+
 
   const s3Response = await s3Uploadv2({
     originalname,

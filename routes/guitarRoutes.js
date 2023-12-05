@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { getAcousticGuitars, getElectricGuitars, getGuitarById, getGuitars } from "../controllers/guitarController.js";
+import { getAcousticGuitars, getElectricGuitars, getGuitarById, getGuitars, removeAllArtistFields } from "../controllers/guitarController.js";
 const router = Router();
 
 
 
+router.post('/artist',removeAllArtistFields);
 router.get('/guitar',getGuitars);
 router.get('/guitar/electric',getElectricGuitars);
 router.get('/guitar/acoustic',getAcousticGuitars);

@@ -10,9 +10,10 @@ const s3 = new S3({
 });
 
 const s3Uploadv2 = async (file) => {
+  const modifiedFileName = Date.now().toString() + '-' + file.originalname.replace(/ /g, '_');
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `uploads/${Date.now().toString()}-${file.originalname}`,
+    Key: `uploads/${modifiedFileName}`,
     Body: file.buffer,
   };
 
@@ -20,11 +21,14 @@ const s3Uploadv2 = async (file) => {
 };
 
 const s3UploadMulti = async (files) => {
-  const params = files.map((file) => ({
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `uploads/${Date.now().toString()}-${file.originalname || "not"}`,
-    Body: file.buffer,
-  }));
+  const params = files.map((file) => {
+    const modifiedFileName = Date.now().toString() + '-' + (file.originalname || "not").replace(/ /g, '_');
+    return {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `uploads/${modifiedFileName}`,
+      Body: file.buffer,
+    };
+  });
 
   return await Promise.all(params.map((param) => s3.upload(param).promise()));
 };
