@@ -3,19 +3,6 @@ import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../utils/catchAsyncError.js";
 import APIFeatures from "../utils/apiFeatures.js";
 
-export const removeAllArtistFields = catchAsyncError(async (req, res, next) => {
-  try {
-    // Remove the "artist" field from all documents
-    const result = await Guitar.updateMany({}, { $unset: { 'artist': 1 } });
-
-    return res.status(200).json({ success: true, message: `${result.nModified} documents updated.` });
-  } catch (error) {
-    // Handle any errors
-    console.error('Error updating documents:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 
 
 export const getGuitars = catchAsyncError(async(req,res,next)=>{
@@ -35,6 +22,22 @@ export const getGuitars = catchAsyncError(async(req,res,next)=>{
   res.status(200).json({ success: true, guitars, guitarsCount });
   })
 
+  export const getAllStrings = catchAsyncError(async (req, res, next) => {
+   
+      // Find all guitars in the database
+      const guitars = await Guitar.find();
+  
+      // Extract strings from each guitar and flatten the array
+      const allStrings = guitars.reduce((accumulator, currentGuitar) => {
+        // Concatenate the strings array of each guitar to the accumulator
+        return accumulator.concat(currentGuitar.strings);
+      }, []);
+
+      const allStringsCount = allStrings.length;
+  
+      res.status(200).json({ success: true, allStrings, allStringsCount });
+   
+  })
 
 export const getElectricGuitars = catchAsyncError(async(req,res,next)=>{
 
